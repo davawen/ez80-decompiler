@@ -1,6 +1,6 @@
-# ez80 Decompiler
+# ez80 Disassembler
 
-This is a quickly made (and pretty blursed) ez80 assembly decompiler.  
+This is a quickly made (and pretty blursed) ez80 disassembler.  
 It takes in hexadecimal ascii coded bincode (whitespace authorized), and it spits out the corresponding assembly.  
 It assumes adl mode is on, which means it only handles 8 bit and  24 bit wide constants.
 
