@@ -44,3 +44,8 @@ add hl, de
 add hl, bc
 ret
 ```
+
+## Sources:
+
+[https://mdfs.net/Docs/Comp/eZ80/OpList](https://mdfs.net/Docs/Comp/eZ80/OpList)
+[http://www.zilog.com/docs/um0077.pdf](http://www.zilog.com/docs/um0077.pdf)
