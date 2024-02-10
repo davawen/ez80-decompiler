@@ -49,4 +49,4 @@ ret
 
 [Official ez80 CPU User Manual](http://www.zilog.com/docs/um0077.pdf) (pages 61-384)
 
-[](https://mdfs.net/Docs/Comp/eZ80/OpList)
+[Full ez80 Opcode List](https://mdfs.net/Docs/Comp/eZ80/OpList)
