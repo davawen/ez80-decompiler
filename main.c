@@ -288,6 +288,41 @@ void print_cb() {
 	else printf("INVALID INSTRUCTION: 0xCB 0x%02x", i);
 }
 
+void print_dd_or_fd_cb(const char *main_register) {
+	uint8_t i = next();
+	if(i == 0x06) printf("rlc (%s+d)", main_register);
+	if(i == 0x0E) printf("rrc (%s+d)", main_register);
+	if(i == 0x16) printf("rl  (%s+d)", main_register);
+	if(i == 0x1E) printf("rr  (%s+d)", main_register);
+	if(i == 0x26) printf("sla (%s+d)", main_register);
+	if(i == 0x2E) printf("sra (%s+d)", main_register);
+	if(i == 0x3E) printf("srl (%s+d)", main_register);
+	if(i == 0x46) printf("bit 0, (%s+d)", main_register);
+	if(i == 0x4E) printf("bit 1, (%s+d)", main_register);
+	if(i == 0x56) printf("bit 2, (%s+d)", main_register);
+	if(i == 0x5E) printf("bit 3, (%s+d)", main_register);
+	if(i == 0x66) printf("bit 4, (%s+d)", main_register);
+	if(i == 0x6E) printf("bit 5, (%s+d)", main_register);
+	if(i == 0x76) printf("bit 6, (%s+d)", main_register);
+	if(i == 0x7E) printf("bit 7, (%s+d)", main_register);
+	if(i == 0x86) printf("res 0, (%s+d)", main_register);
+	if(i == 0x8E) printf("res 1, (%s+d)", main_register);
+	if(i == 0x96) printf("res 2, (%s+d)", main_register);
+	if(i == 0x9E) printf("res 3, (%s+d)", main_register);
+	if(i == 0xA6) printf("res 4, (%s+d)", main_register);
+	if(i == 0xAE) printf("res 5, (%s+d)", main_register);
+	if(i == 0xB6) printf("res 6, (%s+d)", main_register);
+	if(i == 0xBE) printf("res 7, (%s+d)", main_register);
+	if(i == 0xC6) printf("set 0, (%s+d)", main_register);
+	if(i == 0xCE) printf("set 1, (%s+d)", main_register);
+	if(i == 0xD6) printf("set 2, (%s+d)", main_register);
+	if(i == 0xDE) printf("set 3, (%s+d)", main_register);
+	if(i == 0xE6) printf("set 4, (%s+d)", main_register);
+	if(i == 0xEE) printf("set 5, (%s+d)", main_register);
+	if(i == 0xF6) printf("set 6, (%s+d)", main_register);
+	if(i == 0xFE) printf("set 7, (%s+d)", main_register);
+}
+
 void print_dd() {
 	uint8_t i = next();
 	if (i == 0x07) printf("ld   bc, (ix+0x%02x)", next());
@@ -334,7 +369,7 @@ void print_dd() {
 	else if (i == 0xAE) printf("xor  (ix+0x%02x)", next());
 	else if (i == 0xB6) printf("or   (ix+0x%02x)", next());
 	else if (i == 0xBE) printf("cp   (ix+0x%02x)", next());
-	else if (i == 0xCB) print_cb();
+	else if (i == 0xCB) print_dd_or_fd_cb("ix");
 	else if (i == 0xE1) printf("pop  ix");
 	else if (i == 0xE3) printf("ex   (sp),ix");
 	else if (i == 0xE5) printf("push ix");
@@ -479,72 +514,57 @@ void print_ed() {
 
 void print_fd() {
 	uint8_t i = next();
-	if (i == 0x06) printf("rlc (iy+0x%02x)", next());
-	else if (i == 0x07) printf("ld   bc, (iy+0x%02x)", next());
+	if (i == 0x07) printf("ld   bc, (iy+0x%02x)", next());
 	else if (i == 0x09) printf("add  iy, bc");
-	else if (i == 0x0E) printf("rrc (iy+0x%02x)", next());
 	else if (i == 0x0F) printf("ld   (iy+0x%02x), bc", next());
-	else if (i == 0x16) printf("rl  (iy+0x%02x)", next());
 	else if (i == 0x17) printf("ld   de, (iy+0x%02x)", next());
 	else if (i == 0x19) printf("add  iy, de");
 	else if (i == 0x1F) printf("ld   (iy+0x%02x), de", next());
-	else if (i == 0x1E) printf("rr  (iy+0x%02x)", next());
 	else if (i == 0x21) printf("ld   iy, 0x%06x", next_value());
 	else if (i == 0x22) printf("ld   (0x%06x), iy", next_value());
 	else if (i == 0x23) printf("inc  iy");
 	else if (i == 0x27) printf("ld   hl, (iy+0x%02x)", next());
-	else if (i == 0x29) printf("add  iy, ix");
+	else if (i == 0x29) printf("add  iy, iy");
 	else if (i == 0x2A) printf("ld   iy, (0x%06x)", next_value());
 	else if (i == 0x2B) printf("dec  iy");
-	else if (i == 0x26) printf("sla (iy+0x%02x)", next());
 	else if (i == 0x2F) printf("ld   (iy+0x%02x), hl", next());
 	else if (i == 0x31) printf("ld   ix, (iy+0x%02x)", next());
 	else if (i == 0x34) printf("inc  (iy+0x%02x)", next());
 	else if (i == 0x35) printf("dec  (iy+0x%02x)", next());
 	else if (i == 0x36) printf("ld   (iy+0x%02x), 0x%02x", next(), next());
-	else if (i == 0x37) printf("ld   iy, (ix+0x%02x)", next());
-	else if (i == 0x2E) printf("sra (iy+0x%02x)", next());
+	else if (i == 0x37) printf("ld   iy, (iy+0x%02x)", next());
 	else if (i == 0x39) printf("add  iy, sp");
-	else if (i == 0x3E) printf("srl (iy+0x%02x)", next());
-	else if (i == 0x3F) printf("ld   (iy+0x%02x), ix", next());
-	else if (i == 0x46) printf("bit 0, (iy+0x%02x)", next());
-	else if (i == 0x4E) printf("bit 1, (iy+0x%02x)", next());
-	else if (i == 0x56) printf("bit 2, (iy+0x%02x)", next());
-	else if (i == 0x5E) printf("bit 3, (iy+0x%02x)", next());
-	else if (i == 0x66) printf("bit 4, (iy+0x%02x)", next());
-	else if (i == 0x6E) printf("bit 5, (iy+0x%02x)", next());
+	else if (i == 0x3E) printf("ld   (iy+0x%02x), ix", next());
+	else if (i == 0x3F) printf("ld   (iy+0x%02x), iy", next());
+	else if (i == 0x46) printf("ld   b, (iy+0x%02x)", next());
+	else if (i == 0x4E) printf("ld   c, (iy+0x%02x)", next());
+	else if (i == 0x56) printf("ld   d, (iy+0x%02x)", next());
+	else if (i == 0x5E) printf("ld   e, (iy+0x%02x)", next());
+	else if (i == 0x66) printf("ld   h, (iy+0x%02x)", next());
+	else if (i == 0x6E) printf("ld   l, (iy+0x%02x)", next());
 	else if (i == 0x70) printf("ld   (iy+0x%02x), b", next());
 	else if (i == 0x71) printf("ld   (iy+0x%02x), c", next());
 	else if (i == 0x72) printf("ld   (iy+0x%02x), d", next());
 	else if (i == 0x73) printf("ld   (iy+0x%02x), e", next());
 	else if (i == 0x74) printf("ld   (iy+0x%02x), h", next());
 	else if (i == 0x75) printf("ld   (iy+0x%02x), l", next());
-	else if (i == 0x76) printf("bit 6, (iy+0x%02x)", next());
 	else if (i == 0x77) printf("ld   (iy+0x%02x), a", next());
-	else if (i == 0x7E) printf("bit 7, (iy+0x%02x)", next());
-	else if (i == 0x86) printf("res 0, (iy+0x%02x)", next());
-	else if (i == 0x8E) printf("res 1, (iy+0x%02x)", next());
-	else if (i == 0x96) printf("res 2, (iy+0x%02x)", next());
-	else if (i == 0x9E) printf("res 3, (iy+0x%02x)", next());
-	else if (i == 0xA6) printf("res 4, (iy+0x%02x)", next());
-	else if (i == 0xAE) printf("res 5, (iy+0x%02x)", next());
-	else if (i == 0xB6) printf("res 6, (iy+0x%02x)", next());
-	else if (i == 0xBE) printf("res 7, (iy+0x%02x)", next());
-	else if (i == 0xC6) printf("set 0, (iy+0x%02x)", next());
-	else if (i == 0xCB) print_cb();
-	else if (i == 0xCE) printf("set 1, (iy+0x%02x)", next());
-	else if (i == 0xD6) printf("set 2, (iy+0x%02x)", next());
-	else if (i == 0xDE) printf("set 3, (iy+0x%02x)", next());
+	else if (i == 0x7E) printf("ld   a, (iy+0x%02x)", next());
+	else if (i == 0x86) printf("add  a, (iy+0x%02x)", next());
+	else if (i == 0x8E) printf("adc  a, (iy+0x%02x)", next());
+	else if (i == 0x96) printf("sub  a, (iy+0x%02x)", next());
+	else if (i == 0x9E) printf("sbc  a, (iy+0x%02x)", next());
+	else if (i == 0xA6) printf("and  (iy+0x%02x)", next());
+	else if (i == 0xAE) printf("xor  (iy+0x%02x)", next());
+	else if (i == 0xB6) printf("or   (iy+0x%02x)", next());
+	else if (i == 0xBE) printf("cp   (iy+0x%02x)", next());
+	else if (i == 0xCB) print_dd_or_fd_cb("iy");
 	else if (i == 0xE1) printf("pop  iy");
 	else if (i == 0xE3) printf("ex   (sp),iy");
 	else if (i == 0xE5) printf("push iy");
-	else if (i == 0xE6) printf("set 4, (iy+0x%02x)", next());
-	else if (i == 0xEE) printf("set 5, (iy+0x%02x)", next());
 	else if (i == 0xE9) printf("jp   (iy)");
-	else if (i == 0xF6) printf("set 6, (iy+0x%02x)", next());
-	else if (i == 0xFE) printf("set 7, (iy+0x%02x)", next());
 	else if (i == 0xF9) printf("ld   sp,iy");
-	else printf("INVALID INSTRUCTION: 0xFD 0x%02x", i);
+	else printf("INVALID INSTRUCTION: 0xDD 0x%02x", i);
 }
 
 /// read and print an instruction (without a new line)
