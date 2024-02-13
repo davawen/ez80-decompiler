@@ -9,7 +9,7 @@ For example: `push.s hl` becomes `52 e5` to which the decompiler gives `.s push 
 
 ## Build instructions
 
-There are dependencies beyond a C compiler:
+There no are dependencies beyond a C compiler:
 ```
 $ gcc main.c -o ez80dump
 ```
